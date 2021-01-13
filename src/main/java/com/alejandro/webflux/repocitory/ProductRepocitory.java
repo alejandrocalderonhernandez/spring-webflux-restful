@@ -4,6 +4,10 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 import com.alejandro.webflux.document.ProductDocument;
 
-public interface ProductRepocitory extends ReactiveMongoRepository<ProductDocument, String>{
+import reactor.core.publisher.Mono;
+
+public interface ProductRepocitory extends ReactiveMongoRepository<ProductDocument, String> {
+	
+	public Mono<ProductDocument> findByName(String name);
 
 }

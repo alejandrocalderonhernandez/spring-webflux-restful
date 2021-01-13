@@ -35,4 +35,9 @@ public class ProductServiceImpl implements ProductService {
 		return this.repocitory.deleteById(id);
 	}
 
+	@Override
+	public Mono<ProductDocument> findByName(String name) {
+		return this.repocitory.findByName(name);
+	}
+
 }

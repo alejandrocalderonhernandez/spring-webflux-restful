@@ -19,7 +19,8 @@ public class RouterFunctionConfig {
 				.route(RequestPredicates.GET("api/v2/product"), resource::toList)
 				.andRoute(RequestPredicates.GET("api/v2/product/{id}"), resource::findById)
 				.andRoute(RequestPredicates.POST("api/v2/product"), resource::create)
+				.andRoute(RequestPredicates.PUT("api/v2/product/{id}"), resource::update)
 		        .andRoute(RequestPredicates.DELETE("api/v2/product/{id}"), resource::delete)
-		        .andRoute(RequestPredicates.POST("/api/v2/product/upload/img/{id}"), resource::uploadImg);
+		        .andRoute(RequestPredicates.POST("api/v2/product/upload/img/{id}"), resource::uploadImg);
 	}
 }

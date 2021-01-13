@@ -2,6 +2,8 @@ package com.alejandro.webflux.controller;
 
 import java.io.File;
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -117,6 +123,21 @@ public class ProductController {
 				})
 				.map(p -> ResponseEntity.ok(p))
 				.defaultIfEmpty(ResponseEntity.notFound().build());
+	}
+	
+	@GetMapping(path = "download/img/{name:.+}", produces = MediaType.IMAGE_JPEG_VALUE)
+	public Mono<ResponseEntity<Resource>> downloadImg(@PathVariable String name){
+		Path urlFile = Paths.get(path).resolve(name).toAbsolutePath();
+		Resource img = null;
+		try {
+			img = new UrlResource(urlFile.toUri());
+		} catch (Exception e) {
+			log.error("error to get file", e);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, 
+				"attachment; filename=\"" + img.getFilename() + "\"");
+		return Mono.just(new ResponseEntity<Resource>(img, headers, HttpStatus.OK));
 	}
 	
 }

@@ -29,7 +29,6 @@ public class ProductDocument implements Serializable {
 	public ProductDocument(String name, Double price) {
 		this.name = name;
 		this.price = price;
-		this.setDate(LocalDate.now());
 	}
 
 	public String getId() {
